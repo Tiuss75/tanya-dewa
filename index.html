@@ -203,8 +203,8 @@
     </div>
     <div id="registrationPopup" class="popup-overlay hidden">
         <div class="popup-content">
-            <h2>Daftar Akun Premium</h2>
-            <p>Buat akun untuk menyimpan status premium Anda. Jika sudah punya akun, silakan login.</p>
+            <h2>Daftar Akun</h2>
+            <p>Buat akun untuk menyimpan sisa kocok Anda. Jika sudah punya akun, silakan login.</p>
             <div class="form-group"><label for="regName">Nama Lengkap</label><input type="text" id="regName" placeholder="Nama Anda"></div>
             <div class="form-group"><label for="regEmail">Email</label><input type="email" id="regEmail" placeholder="email@anda.com"></div>
             <div class="form-group"><label for="regPassword">Password (min. 6 karakter)</label><input type="password" id="regPassword" placeholder="******"></div>
@@ -218,8 +218,8 @@
     </div>
     <div id="paymentPopup" class="popup-overlay hidden">
         <div class="popup-content" style="max-width: 600px;">
-            <h2>Upgrade ke Premium</h2>
-            <p>Pilih paket untuk melanjutkan ramalan tanpa batas:</p>
+            <h2>Beli Jatah Kocok</h2>
+            <p>Pilih paket untuk mendapatkan jatah kocok tambahan:</p>
             <div class="package-option" data-attempts="5" data-price="25000">
                 <h4>🎯 Paket 5 Kali Kocok</h4>
                 <p><strong>Harga: Rp 25.000</strong></p><p>Cocok untuk penggunaan sekali waktu.</p>
@@ -313,12 +313,12 @@
         const loginBtn = document.getElementById('loginBtn');
         const logoutBtn = document.getElementById('logoutBtn');
         const ramalanNumberSelect = document.getElementById('ramalanNumberSelect');
-        const dewaInput = document.getElementById('dewaInput');
-        const sinthioInput = document.getElementById('sinthioInput');
-        const syairInput = document.getElementById('syairInput');
-        const selayangPandangInput = document.getElementById('selayangPandangInput');
-        const artiRamalanInput = document.getElementById('artiRamalanInput');
-        const pedomanInput = document.getElementById('pedomanInput');
+        const dewaInput = document = document.getElementById('dewaInput');
+        const sinthioInput = document = document.getElementById('sinthioInput');
+        const syairInput = document = document.getElementById('syairInput');
+        const selayangPandangInput = document = document.getElementById('selayangPandangInput');
+        const artiRamalanInput = document = document.getElementById('artiRamalanInput');
+        const pedomanInput = document = document.getElementById('pedomanInput');
         const saveBtn = document.getElementById('saveBtn');
         const paymentPopup = document.getElementById('paymentPopup');
         const confirmPaymentPopup = document.getElementById('confirmPaymentPopup');
@@ -361,8 +361,8 @@
         let currentPredictionNumberState = null;
         let throwCount = 0;
         const maxThrowsFree = 3;
-        let isPremiumUser = false;
-        let freeAttemptsLeft = 2; 
+        let freeAttemptsLeft = 2;
+        let premiumAttemptsLeft = 0; // Variabel baru untuk jatah kocok berbayar
         let selectedPackage = null;
         let unsubscribeUserListener = null;
 
@@ -381,41 +381,40 @@
             currentUser = user;
             const userDocRef = doc(db, "users", user.uid);
             
+            // Menggunakan onSnapshot untuk mendengarkan perubahan real-time pada dokumen pengguna
             unsubscribeUserListener = onSnapshot(userDocRef, async (docSnap) => {
                 const today = new Date().toDateString();
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    isUserAdmin = data.role === 'admin';
-                    isPremiumUser = data.isPremium === true;
+                let userData = docSnap.exists() ? docSnap.data() : {};
 
-                    if (data.lastShakeDate !== today) {
-                        freeAttemptsLeft = 2;
-                        await updateDoc(userDocRef, { freeAttemptsLeft: 2, lastShakeDate: today });
-                    } else {
-                        freeAttemptsLeft = data.freeAttemptsLeft ?? 2;
-                    }
+                isUserAdmin = userData.role === 'admin';
+                premiumAttemptsLeft = userData.premiumAttemptsLeft || 0;
 
-                    if (data.displayName && !user.isAnonymous && !nameInput.value) {
-                        nameInput.value = data.displayName;
+                // Reset jatah gratis harian
+                if (userData.lastShakeDate !== today) {
+                    freeAttemptsLeft = 2;
+                    if (docSnap.exists()) {
+                         await updateDoc(userDocRef, { freeAttemptsLeft: 2, lastShakeDate: today });
                     }
                 } else {
-                    isUserAdmin = false;
-                    isPremiumUser = false;
-                    freeAttemptsLeft = 2;
+                    freeAttemptsLeft = userData.freeAttemptsLeft ?? 2;
+                }
 
-                    if (user.isAnonymous) {
-                        try {
-                            await setDoc(userDocRef, {
-                                displayName: 'Anonymous User',
-                                isPremium: false,
-                                freeAttemptsLeft: 2,
-                                lastShakeDate: today,
-                                createdAt: serverTimestamp(),
-                                provider: 'anonymous'
-                            });
-                        } catch (e) {
-                            console.error("Gagal membuat dokumen untuk pengguna anonim:", e);
-                        }
+                if (userData.displayName && !user.isAnonymous && !nameInput.value) {
+                    nameInput.value = userData.displayName;
+                }
+
+                if (!docSnap.exists() && user.isAnonymous) {
+                    try {
+                        await setDoc(userDocRef, {
+                            displayName: 'Anonymous User',
+                            freeAttemptsLeft: 2,
+                            premiumAttemptsLeft: 0,
+                            lastShakeDate: today,
+                            createdAt: serverTimestamp(),
+                            provider: 'anonymous'
+                        });
+                    } catch (e) {
+                        console.error("Gagal membuat dokumen untuk pengguna anonim:", e);
                     }
                 }
                 updateUIBasedOnUserState();
@@ -424,17 +423,22 @@
         }
         
         function updateUIBasedOnUserState() {
-            const canShake = nameInput.value.trim() !== '' && (isPremiumUser || freeAttemptsLeft > 0 || isUserAdmin);
+            // Logika untuk mengaktifkan tombol kocok
+            const canShake = nameInput.value.trim() !== '' && (premiumAttemptsLeft > 0 || freeAttemptsLeft > 0 || isUserAdmin);
             shakeBtn.disabled = !canShake;
-            // Tampilkan jumlah kocokan tersisa jika pengguna bukan premium
-            if (!isPremiumUser && !isUserAdmin) {
-                 goToPaymentBtn.textContent = `Upgrade Sekarang (${freeAttemptsLeft} sisa)`;
-                 if (freeAttemptsLeft <= 0) {
-                     goToPaymentBtn.textContent = `Upgrade Sekarang (Habis)`;
-                 }
+
+            // Memperbarui teks tombol upgrade berdasarkan sisa jatah
+            let text = '';
+            if (isUserAdmin) {
+                text = 'Mode Admin';
+            } else if (premiumAttemptsLeft > 0) {
+                text = `Jatah Premium (${premiumAttemptsLeft} sisa)`;
+            } else if (freeAttemptsLeft > 0) {
+                text = `Gratis (${freeAttemptsLeft} sisa)`;
             } else {
-                 goToPaymentBtn.textContent = `Akun Premium`;
+                text = 'Beli Jatah Kocok';
             }
+            goToPaymentBtn.textContent = text;
         }
 
         // === Logika Utama & Event Listeners ===
@@ -545,7 +549,7 @@
             tabContents.forEach(content => content.classList.remove('active'));
             tabButtons[0].classList.add('active');
             tabContents[0].classList.add('active');
-            updateUIBasedOnUserState(); // Memastikan UI diperbarui setelah reset
+            updateUIBasedOnUserState(); 
         }
 
         nameInput.addEventListener('input', () => {
@@ -558,7 +562,8 @@
                 showMessage('Peringatan', 'Terjadi kesalahan. Silakan muat ulang halaman.');
                 return;
             }
-            if (!isPremiumUser && freeAttemptsLeft <= 0 && !isUserAdmin) {
+            // Periksa jatah kocok berbayar atau gratis
+            if (premiumAttemptsLeft <= 0 && freeAttemptsLeft <= 0 && !isUserAdmin) {
                 paymentPopup.classList.remove('hidden');
                 return;
             }
@@ -630,12 +635,13 @@
                     
                     predictionResult.classList.remove('hidden');
                     
-                    if (!isPremiumUser && !isUserAdmin) {
-                        try {
-                            const userDocRef = doc(db, "users", currentUser.uid);
+                    if (!isUserAdmin) {
+                        const userDocRef = doc(db, "users", currentUser.uid);
+                        // Prioritaskan pengurangan jatah berbayar
+                        if (premiumAttemptsLeft > 0) {
+                            await updateDoc(userDocRef, { premiumAttemptsLeft: increment(-1) });
+                        } else if (freeAttemptsLeft > 0) {
                             await updateDoc(userDocRef, { freeAttemptsLeft: increment(-1) });
-                        } catch (updateError) {
-                            console.error("Gagal mengurangi jatah gratis, tapi hasil tetap ditampilkan:", updateError);
                         }
                     }
                     updateUIBasedOnUserState();
@@ -678,8 +684,8 @@
                  await setDoc(userDocRef, {
                     displayName: displayName || user.displayName,
                     email: user.email,
-                    isPremium: false,
                     freeAttemptsLeft: 2,
+                    premiumAttemptsLeft: 0,
                     createdAt: serverTimestamp()
                 });
             }
@@ -757,16 +763,18 @@
                         console.log('Payment success:', res);
                         try {
                             if (currentUser) {
+                                // Tambahkan jatah kocok berbayar
                                 await updateDoc(doc(db, "users", currentUser.uid), {
-                                    isPremium: true
+                                    premiumAttemptsLeft: increment(selectedPackage.attempts)
                                 });
                                 await setDoc(doc(db, "purchases", res.order_id), {
                                     status: 'success',
                                     userId: currentUser.uid,
+                                    package: selectedPackage,
                                     timestamp: serverTimestamp()
                                 });
                             }
-                            showMessage('Sukses', 'Pembayaran berhasil! Status premium Anda telah diaktifkan.');
+                            showMessage('Sukses', `Pembayaran berhasil! Anda mendapatkan ${selectedPackage.attempts} kocok tambahan.`);
                             confirmPaymentPopup.classList.add('hidden');
                             resetState();
                         } catch (error) {
