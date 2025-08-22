@@ -10,9 +10,8 @@
     <link rel="apple-touch-icon" href="favicon-512.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script type="text/javascript"
-        src="https://app.midtrans.com/snap/snap.js" 
-        data-client-key="Mid-client-W0vPic8NOjBtZxUa"></script> 
-        <style>
+        src="https://app.midtrans.com/snap/snap.js"
+        data-client-key="Mid-client-W0vPic8NOjBtZxUa"></script> <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Inter:wght@400;600;700&display=swap');
         :root {
             --primary-red: #9c1c26; --dark-red: #7a0a14; --gold: #d4af37;
@@ -61,17 +60,7 @@
         .puak-poi { width: 70px; height: 35px; background: #d2b48c; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: var(--black); font-weight: 700; box-shadow: 0 5px 15px rgba(0,0,0,.3); }
         .throw-animation { animation: throw .8s cubic-bezier(.36,.07,.19,.97) both; }
         @keyframes throw { 0%{transform:translateY(0) rotate(0)} 30%{transform:translateY(-80px) rotate(180deg)} 70%{transform:translateY(40px) rotate(360deg)} 100%{transform:translateY(0) rotate(720deg)} }
-        
-        /* Revised Prediction Card Styles */
-        .prediction-card { 
-            background: var(--white); 
-            color: var(--black); 
-            border-radius: 15px; 
-            padding: 25px; 
-            margin: 30px 0; 
-            border: 3px solid var(--gold); 
-            box-shadow: 0 5px 20px rgba(0,0,0,.2);
-        }
+        .prediction-card { background: var(--white); color: var(--black); border-radius: 15px; padding: 25px; margin: 30px 0; border: 3px solid var(--gold); box-shadow: 0 5px 20px rgba(0,0,0,.2); }
         .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid var(--light-gold); }
         .card-title { font-size: 1.5rem; color: var(--primary-red); font-weight: 700; }
         .card-dewa { font-size: 1rem; color: var(--black); font-style: italic; margin-top: 5px; }
@@ -113,12 +102,12 @@
 <body>
     <div id="appContainer" class="container">
         <div class="menu">
-            <button id="goToPayment" class="btn"><i class="fas fa-crown"></i> Upgrade Sekarang</button>
+            <button id="goToPayment" class="btn"><i class="fas fa-coins"></i> Tambah Kocokan</button>
         </div>
         <div class="header">
             <h1>Tanya Dewa</h1>
-      <p>Ramalan Ciamsi</p>  
-     <p>Petunjuk Dewa untuk langkah hidup Anda</p>
+            <p>Ramalan Ciamsi</p>
+            <p>Petunjuk Dewa untuk langkah hidup Anda</p>
         </div>
         <div class="step">
             <div class="step-title"><i class="fas fa-user"></i><h2>Data Diri</h2></div>
@@ -203,9 +192,9 @@
     </div>
     <div id="registrationPopup" class="popup-overlay hidden">
         <div class="popup-content">
-            <h2>Daftar Akun Premium</h2>
-            <p>Buat akun untuk menyimpan status premium Anda. Jika sudah punya akun, silakan login.</p>
-            <div class="form-group"><label for="regName">Nama Lengkap</label><input type="text" id="regName" placeholder="Nama Anda"></div>
+            <h2>Daftar/Login untuk Membeli</h2>
+            <p>Buat akun atau login untuk menyimpan kocokan yang Anda beli.</p>
+            <div class="form-group"><label for="regName">Nama Lengkap (hanya untuk daftar)</label><input type="text" id="regName" placeholder="Nama Anda"></div>
             <div class="form-group"><label for="regEmail">Email</label><input type="email" id="regEmail" placeholder="email@anda.com"></div>
             <div class="form-group"><label for="regPassword">Password (min. 6 karakter)</label><input type="password" id="regPassword" placeholder="******"></div>
             <div id="authError" style="color:red; text-align:center; margin-bottom:10px; display:none;"></div>
@@ -218,11 +207,11 @@
     </div>
     <div id="paymentPopup" class="popup-overlay hidden">
         <div class="popup-content" style="max-width: 600px;">
-            <h2>Upgrade ke Premium</h2>
-            <p>Pilih paket untuk melanjutkan ramalan tanpa batas:</p>
+            <h2>Tambah Kocokan</h2>
+            <p>Anda kehabisan kocokan gratis. Beli paket tambahan untuk melanjutkan.</p>
             <div class="package-option" data-attempts="5" data-price="25000">
                 <h4>🎯 Paket 5 Kali Kocok</h4>
-                <p><strong>Harga: Rp 25.000</strong></p><p>Cocok untuk penggunaan sekali waktu.</p>
+                <p><strong>Harga: Rp 25.000</strong></p><p>Cocok untuk penggunaan beberapa kali.</p>
             </div>
             <div class="package-option" data-attempts="12" data-price="50000">
                 <h4>🚀 Paket 12 Kali Kocok</h4>
@@ -250,14 +239,14 @@
     <div id="termsPopup" class="popup-overlay hidden">
         <div class="popup-content popup-content-legal">
             <h2>Syarat & Ketentuan</h2>
-            <p style="text-align:left;">Selamat datang di aplikasi TanyaDewa.com Dengan menggunakan aplikasi ini, Anda setuju untuk mematuhi syarat dan ketentuan berikut:</p><h4 style="text-align:left; margin-top:15px;">1. Tujuan Aplikasi</h4><p style="text-align:left;">Aplikasi ini disediakan untuk tujuan hiburan, refleksi diri, dan pelestarian budaya. Hasil yang diberikan tidak boleh dianggap sebagai nasihat profesional (keuangan, hukum, medis, dll.) dan tidak dijamin akurat 100%.</p><h4 style="text-align:left; margin-top:15px;">2. Layanan Berbayar</h4><p style="text-align:left;">Kami menawarkan akses premium berbayar untuk penggunaan tanpa batas. Pembayaran diproses melalui Midtrans. Semua transaksi bersifat final dan tidak dapat dikembalikan (non-refundable) setelah pembayaran berhasil.</p><h4 style="text-align:left; margin-top:15px;">3. Batasan Tanggung Jawab</h4><p style="text-align:left;">Pengembang tidak bertanggung jawab atas keputusan atau tindakan apa pun yang Anda ambil berdasarkan interpretasi dari hasil yang diberikan oleh aplikasi ini.</p>
+            <p style="text-align:left;">Selamat datang di aplikasi TanyaDewa.com Dengan menggunakan aplikasi ini, Anda setuju untuk mematuhi syarat dan ketentuan berikut:</p><h4 style="text-align:left; margin-top:15px;">1. Tujuan Aplikasi</h4><p style="text-align:left;">Aplikasi ini disediakan untuk tujuan hiburan, refleksi diri, dan pelestarian budaya. Hasil yang diberikan tidak boleh dianggap sebagai nasihat profesional (keuangan, hukum, medis, dll.) dan tidak dijamin akurat 100%.</p><h4 style="text-align:left; margin-top:15px;">2. Layanan Berbayar</h4><p style="text-align:left;">Kami menawarkan paket kocokan tambahan berbayar. Pembayaran diproses melalui Midtrans. Semua transaksi bersifat final dan tidak dapat dikembalikan (non-refundable) setelah pembayaran berhasil.</p><h4 style="text-align:left; margin-top:15px;">3. Batasan Tanggung Jawab</h4><p style="text-align:left;">Pengembang tidak bertanggung jawab atas keputusan atau tindakan apa pun yang Anda ambil berdasarkan interpretasi dari hasil yang diberikan oleh aplikasi ini.</p>
             <div class="popup-buttons" style="margin-top:20px;"><button class="btn close-popup-btn">Tutup</button></div>
         </div>
     </div>
     <div id="privacyPopup" class="popup-overlay hidden">
         <div class="popup-content popup-content-legal">
             <h2>Kebijakan Privasi</h2>
-            <p style="text-align:left;">Kami menghargai privasi Anda. Dokumen ini menjelaskan bagaimana kami mengumpulkan dan menggunakan data Anda.</p><h4 style="text-align:left; margin-top:15px;">1. Data yang Kami Kumpulkan</h4><p style="text-align:left;">Aplikasi ini menggunakan Google Authentication. Kami mengumpulkan User ID, nama, dan email saat Anda mendaftar. Kami tidak mengumpulkan data pribadi lain di luar proses ini.</p><h4 style="text-align:left; margin-top:15px;">2. Penggunaan Data</h4><p style="text-align:left;">User ID, nama, dan email digunakan untuk membedakan antara pengguna gratis dan premium, serta untuk melacak status pembelian dan jatah kocokan. Data ini disimpan dengan aman di server Google dan tidak akan dibagikan kepada pihak ketiga.</p>
+            <p style="text-align:left;">Kami menghargai privasi Anda. Dokumen ini menjelaskan bagaimana kami mengumpulkan dan menggunakan data Anda.</p><h4 style="text-align:left; margin-top:15px;">1. Data yang Kami Kumpulkan</h4><p style="text-align:left;">Aplikasi ini menggunakan Google Authentication. Kami mengumpulkan User ID, nama, dan email saat Anda mendaftar. Kami tidak mengumpulkan data pribadi lain di luar proses ini.</p><h4 style="text-align:left; margin-top:15px;">2. Penggunaan Data</h4><p style="text-align:left;">User ID, nama, dan email digunakan untuk membedakan pengguna dan melacak status pembelian serta sisa jatah kocokan (gratis dan berbayar). Data ini disimpan dengan aman di server Google dan tidak akan dibagikan kepada pihak ketiga.</p>
             <div class="popup-buttons" style="margin-top:20px;"><button class="btn close-popup-btn">Tutup</button></div>
         </div>
     </div>
@@ -361,8 +350,8 @@
         let currentPredictionNumberState = null;
         let throwCount = 0;
         const maxThrowsFree = 3;
-        let isPremiumUser = false;
-        let freeAttemptsLeft = 2; 
+        let purchasedAttempts = 0;
+        let freeAttemptsLeft = 2;
         let selectedPackage = null;
         let unsubscribeUserListener = null;
 
@@ -377,16 +366,16 @@
 
         async function initializeAppForUser(user) {
             if (unsubscribeUserListener) unsubscribeUserListener();
-            
+
             currentUser = user;
             const userDocRef = doc(db, "users", user.uid);
-            
+
             unsubscribeUserListener = onSnapshot(userDocRef, async (docSnap) => {
                 const today = new Date().toDateString();
                 if (docSnap.exists()) {
                     const data = docSnap.data();
                     isUserAdmin = data.role === 'admin';
-                    isPremiumUser = data.isPremium === true;
+                    purchasedAttempts = data.purchasedAttempts || 0;
 
                     if (data.lastShakeDate !== today) {
                         freeAttemptsLeft = 2;
@@ -400,40 +389,36 @@
                     }
                 } else {
                     isUserAdmin = false;
-                    isPremiumUser = false;
+                    purchasedAttempts = 0;
                     freeAttemptsLeft = 2;
 
                     if (user.isAnonymous) {
                         try {
                             await setDoc(userDocRef, {
                                 displayName: 'Anonymous User',
-                                isPremium: false,
+                                purchasedAttempts: 0,
                                 freeAttemptsLeft: 2,
                                 lastShakeDate: today,
                                 createdAt: serverTimestamp(),
                                 provider: 'anonymous'
                             });
-                        } catch (e) {
-                            console.error("Gagal membuat dokumen untuk pengguna anonim:", e);
-                        }
+                        } catch (e) { console.error("Gagal membuat dokumen untuk pengguna anonim:", e); }
                     }
                 }
                 updateUIBasedOnUserState();
-                checkUrlHash(); 
+                checkUrlHash();
             });
         }
-        
+
         function updateUIBasedOnUserState() {
-            const canShake = nameInput.value.trim() !== '' && (isPremiumUser || freeAttemptsLeft > 0 || isUserAdmin);
+            const hasAttempts = freeAttemptsLeft > 0 || purchasedAttempts > 0;
+            const canShake = nameInput.value.trim() !== '' && (hasAttempts || isUserAdmin);
             shakeBtn.disabled = !canShake;
-            // Tampilkan jumlah kocokan tersisa jika pengguna bukan premium
-            if (!isPremiumUser && !isUserAdmin) {
-                 goToPaymentBtn.textContent = `Upgrade Sekarang (${freeAttemptsLeft} sisa)`;
-                 if (freeAttemptsLeft <= 0) {
-                     goToPaymentBtn.textContent = `Upgrade Sekarang (Habis)`;
-                 }
+
+            if (isUserAdmin) {
+                 goToPaymentBtn.innerHTML = `<i class="fas fa-crown"></i> Admin Mode`;
             } else {
-                 goToPaymentBtn.textContent = `Akun Premium`;
+                 goToPaymentBtn.innerHTML = `<i class="fas fa-coins"></i> Kocokan Anda (Gratis: ${freeAttemptsLeft}, Beli: ${purchasedAttempts})`;
             }
         }
 
@@ -455,7 +440,6 @@
                 adminCmsSection.classList.add('hidden');
                 return;
             }
-            
             appContainer.classList.add('hidden');
             if (isUserAdmin) {
                 adminCmsSection.classList.remove('hidden');
@@ -466,33 +450,27 @@
                 adminCmsSection.classList.add('hidden');
             }
         }
-        
         window.addEventListener('hashchange', checkUrlHash);
         document.addEventListener('DOMContentLoaded', checkUrlHash);
-
         loginBtn.addEventListener('click', () => {
             const email = document.getElementById('adminEmail').value;
             const password = document.getElementById('adminPassword').value;
             signInWithEmailAndPassword(auth, email, password)
               .catch(error => showMessage('Login Gagal', error.message));
         });
-
         logoutBtn.addEventListener('click', () => {
-            signOut(auth).then(() => { 
+            signOut(auth).then(() => {
                 isUserAdmin = false;
-                window.location.hash = ''; 
+                window.location.hash = '';
                 window.location.reload();
             });
         });
-
         async function initCms() {
             if (ramalanNumberSelect.options.length > 0) return;
             for (let i = 1; i <= 60; i++) ramalanNumberSelect.add(new Option(`Nomor ${i}`, i));
             loadRamalanData(1);
         }
-
         ramalanNumberSelect.addEventListener('change', (e) => loadRamalanData(e.target.value));
-
         async function loadRamalanData(number) {
             try {
                 const docRef = doc(db, "ramalan", String(number));
@@ -506,29 +484,20 @@
                     for (const key in fields) fields[key].value = '';
                     pedomanInput.value = '';
                 }
-            } catch (error) {
-                console.error("Gagal memuat data ramalan:", error);
-                showMessage('Error', 'Gagal memuat data ramalan.');
-            }
+            } catch (error) { showMessage('Error', 'Gagal memuat data ramalan.'); }
         }
-
         saveBtn.addEventListener('click', async () => {
             const number = ramalanNumberSelect.value;
             const dataToSave = {
-                nomor: parseInt(number),
-                dewa: dewaInput.value.trim(),
-                sinthio: sinthioInput.value.trim(),
-                syair: syairInput.value.trim(),
-                selayangPandang: selayangPandangInput.value.trim(),
+                nomor: parseInt(number), dewa: dewaInput.value.trim(), sinthio: sinthioInput.value.trim(),
+                syair: syairInput.value.trim(), selayangPandang: selayangPandangInput.value.trim(),
                 artiRamalan: artiRamalanInput.value.trim(),
                 pedoman: pedomanInput.value.split('\n').filter(line => line.trim() !== '')
             };
             try {
                 await setDoc(doc(db, "ramalan", number), dataToSave);
                 showMessage('Sukses', `Data untuk nomor ${number} berhasil disimpan.`);
-            } catch (error) {
-                showMessage('Error', 'Gagal menyimpan data.');
-            }
+            } catch (error) { showMessage('Error', 'Gagal menyimpan data.'); }
         });
 
         // Main App Logic
@@ -541,7 +510,6 @@
             predictionResult.classList.add('hidden');
             puakpois.forEach(p => p.textContent = '-');
             currentPredictionNumberState = null;
-            // updateUIBasedOnUserState(); // DIHAPUS SESUAI PERMINTAAN
             tabButtons.forEach(btn => btn.classList.remove('active'));
             tabContents.forEach(content => content.classList.remove('active'));
             tabButtons[0].classList.add('active');
@@ -554,11 +522,11 @@
 
         shakeBtn.addEventListener('click', () => {
             if (!currentUser) return;
-            if (!isPremiumUser && freeAttemptsLeft <= 0 && !isUserAdmin) {
+            if (freeAttemptsLeft <= 0 && purchasedAttempts <= 0 && !isUserAdmin) {
                 paymentPopup.classList.remove('hidden');
                 return;
             }
-            shakeBtn.disabled = true; // DIUBAH: Tombol langsung nonaktif
+            shakeBtn.disabled = true;
             resetState();
             ciamsiContainer.classList.add('shake-animation');
             fallingStick.className = 'falling-stick';
@@ -572,7 +540,7 @@
                 throwBtn.disabled = false;
             }, 800);
         });
-        
+
         throwBtn.addEventListener('click', async () => {
             throwBtn.disabled = true;
             throwCount++;
@@ -592,10 +560,9 @@
                     throwResultText.textContent = 'Hasil: Direstui Dewa!';
                     await showPrediction();
                 } else {
-                    const hasReachedLimit = throwCount >= maxThrowsFree;
-                    if (hasReachedLimit) {
+                    if (throwCount >= maxThrowsFree) {
                         throwResultText.textContent = 'Batas lemparan tercapai. Silakan kocok ulang.';
-                        updateUIBasedOnUserState(); // DIUBAH: Aktifkan kembali tombol kocok
+                        updateUIBasedOnUserState();
                     } else {
                         throwResultText.textContent = 'Hasil: Belum direstui. Coba lagi.';
                         throwBtn.disabled = false;
@@ -625,29 +592,31 @@
                     });
                     
                     predictionResult.classList.remove('hidden');
-                    // shakeBtn.disabled = true; // DIHAPUS SESUAI PERMINTAAN
                     
-                    if (!isPremiumUser && !isUserAdmin) {
+                    if (!isUserAdmin) {
                         try {
                             const userDocRef = doc(db, "users", currentUser.uid);
-                            await updateDoc(userDocRef, { freeAttemptsLeft: increment(-1) });
+                            if (freeAttemptsLeft > 0) {
+                                await updateDoc(userDocRef, { freeAttemptsLeft: increment(-1) });
+                            } else if (purchasedAttempts > 0) {
+                                await updateDoc(userDocRef, { purchasedAttempts: increment(-1) });
+                            }
                         } catch (updateError) {
-                            console.error("Gagal mengurangi jatah gratis, tapi hasil tetap ditampilkan:", updateError);
+                            console.error("Gagal mengurangi jatah kocokan:", updateError);
                         }
                     }
-                    updateUIBasedOnUserState(); // DIUBAH: Aktifkan kembali tombol kocok untuk sesi berikutnya
-                    
+                    updateUIBasedOnUserState();
+
                 } else {
                     showMessage('Data Kosong', `Data ramalan nomor ${currentPredictionNumberState} belum diisi.`);
                     resetState();
                 }
             } catch (error) {
-                console.error("Gagal mengambil data ramalan:", error);
                 showMessage('Error', 'Gagal memuat data ramalan.');
                 resetState();
             }
         }
-        
+
         // Payment and Registration Flow
         document.querySelectorAll('.package-option').forEach(pkg => {
             pkg.addEventListener('click', () => {
@@ -655,7 +624,7 @@
                     attempts: parseInt(pkg.getAttribute('data-attempts')),
                     price: parseInt(pkg.getAttribute('data-price'))
                 };
-                priceDisplay.textContent = selectedPackage.price.toLocaleString();
+                priceDisplay.textContent = selectedPackage.price.toLocaleString('id-ID');
                 attemptsDisplay.textContent = selectedPackage.attempts;
                 paymentPopup.classList.add('hidden');
                 if (currentUser && !currentUser.isAnonymous) {
@@ -675,8 +644,9 @@
                  await setDoc(userDocRef, {
                     displayName: displayName || user.displayName,
                     email: user.email,
-                    isPremium: false,
+                    purchasedAttempts: 0,
                     freeAttemptsLeft: 2,
+                    lastShakeDate: new Date().toDateString(),
                     createdAt: serverTimestamp()
                 });
             }
@@ -690,18 +660,14 @@
             authError.style.display = 'block';
             if (error.code === 'auth/email-already-in-use') {
                 authError.textContent = 'Email sudah terdaftar. Silakan login.';
-            } else {
-                authError.textContent = 'Terjadi kesalahan. Coba lagi.';
-            }
+            } else { authError.textContent = 'Terjadi kesalahan. Coba lagi.'; }
         };
 
         registerBtn.addEventListener('click', async () => {
             const name = document.getElementById('regName').value.trim();
             const email = document.getElementById('regEmail').value.trim();
             const password = document.getElementById('regPassword').value;
-            if (!name || !email || password.length < 6) {
-                return showMessage('Data Tidak Lengkap', 'Harap isi semua field. Password minimal 6 karakter.');
-            }
+            if (!name || !email || password.length < 6) { return showMessage('Data Tidak Lengkap', 'Harap isi semua field. Password minimal 6 karakter.'); }
             try {
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 await updateProfile(userCredential.user, { displayName: name });
@@ -716,7 +682,7 @@
             try {
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 await handleAuthSuccess(userCredential);
-            } catch (error) { 
+            } catch (error) {
                 authError.style.display = 'block';
                 authError.textContent = 'Login gagal. Periksa kembali email dan password Anda.';
             }
@@ -732,8 +698,7 @@
             const userName = nameInput.value.trim();
             if (!userName && currentUser.isAnonymous) {
                 showMessage('Peringatan', 'Harap isi nama Anda di halaman utama sebelum melanjutkan.');
-                confirmPaymentPopup.classList.add('hidden');
-                return; 
+                confirmPaymentPopup.classList.add('hidden'); return;
             }
             const btn = confirmRealPayment;
             btn.disabled = true;
@@ -743,56 +708,46 @@
                 const orderId = 'ciamsi-' + Date.now() + Math.random().toString(36).substr(2, 9);
                 
                 const result = await createTransaction({ 
-                    name: finalUserName, 
-                    price: selectedPackage.price, 
-                    attempts: selectedPackage.attempts,
-                    orderId: orderId
+                    name: finalUserName, price: selectedPackage.price,
+                    attempts: selectedPackage.attempts, orderId: orderId
                 });
+
                 window.snap.pay(result.data.token, {
                     onSuccess: async (res) => {
                         console.log('Payment success:', res);
+                        
+                        // 1. Update database
                         if (currentUser) {
                              await updateDoc(doc(db, "users", currentUser.uid), {
-                                isPremium: true
+                                purchasedAttempts: increment(selectedPackage.attempts)
                             });
                             await setDoc(doc(db, "purchases", res.order_id), {
-                                status: 'success',
+                                status: 'success', 
                                 userId: currentUser.uid,
-                                timestamp: serverTimestamp()
+                                timestamp: serverTimestamp(),
+                                attemptsAdded: selectedPackage.attempts
                             });
                         }
-                        showMessage('Sukses', 'Pembayaran berhasil! Status premium Anda telah diaktifkan.');
-                        confirmPaymentPopup.classList.add('hidden');
-                        resetState();
+
+                        // 2. Tampilkan pesan sukses dengan pemberitahuan redirect
+                        showMessage('Sukses', `Pembayaran berhasil! ${selectedPackage.attempts} kocokan telah ditambahkan. Halaman akan dimuat ulang secara otomatis.`);
+                        
+                        // 3. Tunggu 3 detik, lalu reload halaman
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 3000); // 3000 milidetik = 3 detik
                     },
                     onPending: (res) => {
                         console.log('Payment pending:', res);
-                        if (currentUser) {
-                            setDoc(doc(db, "purchases", res.order_id), {
-                                status: 'pending',
-                                userId: currentUser.uid,
-                                package: selectedPackage,
-                                timestamp: serverTimestamp()
-                            });
-                        }
+                        if (currentUser) { setDoc(doc(db, "purchases", res.order_id), { status: 'pending', userId: currentUser.uid, package: selectedPackage, timestamp: serverTimestamp() }); }
                         showMessage('Pending', 'Menunggu konfirmasi pembayaran.');
                     },
                     onError: (res) => {
                         console.error('Payment error:', res);
-                        if (currentUser) {
-                            setDoc(doc(db, "purchases", res.order_id), {
-                                status: 'error',
-                                userId: currentUser.uid,
-                                package: selectedPackage,
-                                timestamp: serverTimestamp()
-                            });
-                        }
+                        if (currentUser) { setDoc(doc(db, "purchases", res.order_id), { status: 'error', userId: currentUser.uid, package: selectedPackage, timestamp: serverTimestamp() }); }
                         showMessage('Gagal', 'Pembayaran gagal. Silakan coba lagi.');
                     },
-                    onClose: () => {
-                        console.log('Popup pembayaran ditutup oleh pengguna.');
-                        showMessage('Pembayaran Dibatalkan', 'Anda membatalkan pembayaran.');
-                    }
+                    onClose: () => { showMessage('Pembayaran Dibatalkan', 'Anda membatalkan pembayaran.'); }
                 });
             } catch (error) {
                 console.error('Error memanggil Cloud Function:', error);
@@ -816,7 +771,6 @@
                 link.click();
             });
         });
-
         whatsappShareBtn.addEventListener('click', (e) => {
             e.preventDefault();
             const pedomanText = Array.from(document.querySelectorAll('#pedomanList li')).map(li => `- ${li.textContent}`).join('\n');
@@ -847,7 +801,6 @@
         async function initializeAuth() {
             try {
                 await setPersistence(auth, browserLocalPersistence);
-
                 onAuthStateChanged(auth, async (user) => {
                     if (user) {
                         await initializeAppForUser(user);
@@ -855,7 +808,6 @@
                         await signInAnonymously(auth);
                     }
                 });
-
             } catch (error) {
                 console.error("Gagal mengatur persistensi:", error);
                 showMessage('Error Kritis', 'Gagal memuat sesi Anda. Coba bersihkan cache browser.');
