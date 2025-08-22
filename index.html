@@ -362,7 +362,7 @@
         let throwCount = 0;
         const maxThrowsFree = 3;
         let freeAttemptsLeft = 2;
-        let premiumAttemptsLeft = 0; // Variabel baru untuk jatah kocok berbayar
+        let premiumAttemptsLeft = 0;
         let selectedPackage = null;
         let unsubscribeUserListener = null;
 
@@ -381,7 +381,6 @@
             currentUser = user;
             const userDocRef = doc(db, "users", user.uid);
             
-            // Menggunakan onSnapshot untuk mendengarkan perubahan real-time pada dokumen pengguna
             unsubscribeUserListener = onSnapshot(userDocRef, async (docSnap) => {
                 const today = new Date().toDateString();
                 let userData = docSnap.exists() ? docSnap.data() : {};
@@ -389,7 +388,6 @@
                 isUserAdmin = userData.role === 'admin';
                 premiumAttemptsLeft = userData.premiumAttemptsLeft || 0;
 
-                // Reset jatah gratis harian
                 if (userData.lastShakeDate !== today) {
                     freeAttemptsLeft = 2;
                     if (docSnap.exists()) {
@@ -423,11 +421,9 @@
         }
         
         function updateUIBasedOnUserState() {
-            // Logika untuk mengaktifkan tombol kocok
             const canShake = nameInput.value.trim() !== '' && (premiumAttemptsLeft > 0 || freeAttemptsLeft > 0 || isUserAdmin);
             shakeBtn.disabled = !canShake;
 
-            // Memperbarui teks tombol upgrade berdasarkan sisa jatah
             let text = '';
             if (isUserAdmin) {
                 text = 'Mode Admin';
@@ -562,7 +558,6 @@
                 showMessage('Peringatan', 'Terjadi kesalahan. Silakan muat ulang halaman.');
                 return;
             }
-            // Periksa jatah kocok berbayar atau gratis
             if (premiumAttemptsLeft <= 0 && freeAttemptsLeft <= 0 && !isUserAdmin) {
                 paymentPopup.classList.remove('hidden');
                 return;
@@ -637,7 +632,6 @@
                     
                     if (!isUserAdmin) {
                         const userDocRef = doc(db, "users", currentUser.uid);
-                        // Prioritaskan pengurangan jatah berbayar
                         if (premiumAttemptsLeft > 0) {
                             await updateDoc(userDocRef, { premiumAttemptsLeft: increment(-1) });
                         } else if (freeAttemptsLeft > 0) {
@@ -763,7 +757,6 @@
                         console.log('Payment success:', res);
                         try {
                             if (currentUser) {
-                                // Tambahkan jatah kocok berbayar
                                 await updateDoc(doc(db, "users", currentUser.uid), {
                                     premiumAttemptsLeft: increment(selectedPackage.attempts)
                                 });
@@ -853,8 +846,14 @@
         });
 
         // Popup Handlers
-        termsLink.addEventListener('click', () => termsPopup.classList.remove('hidden'));
-        privacyLink.addEventListener('click', () => privacyPopup.classList.remove('hidden'));
+        termsLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            termsPopup.classList.remove('hidden');
+        });
+        privacyLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            privacyPopup.classList.remove('hidden');
+        });
         closePopupBtns.forEach(btn => btn.addEventListener('click', (e) => e.target.closest('.popup-overlay').classList.add('hidden')));
 
         // Service Worker
