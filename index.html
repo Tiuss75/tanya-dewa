@@ -541,11 +541,11 @@
             predictionResult.classList.add('hidden');
             puakpois.forEach(p => p.textContent = '-');
             currentPredictionNumberState = null;
-            // updateUIBasedOnUserState(); // DIHAPUS SESUAI PERMINTAAN
             tabButtons.forEach(btn => btn.classList.remove('active'));
             tabContents.forEach(content => content.classList.remove('active'));
             tabButtons[0].classList.add('active');
             tabContents[0].classList.add('active');
+            updateUIBasedOnUserState(); // Memastikan UI diperbarui setelah reset
         }
 
         nameInput.addEventListener('input', () => {
@@ -553,12 +553,16 @@
         });
 
         shakeBtn.addEventListener('click', () => {
-            if (!currentUser) return;
+            if (!currentUser) {
+                console.error("currentUser is null. Cannot shake.");
+                showMessage('Peringatan', 'Terjadi kesalahan. Silakan muat ulang halaman.');
+                return;
+            }
             if (!isPremiumUser && freeAttemptsLeft <= 0 && !isUserAdmin) {
                 paymentPopup.classList.remove('hidden');
                 return;
             }
-            shakeBtn.disabled = true; // DIUBAH: Tombol langsung nonaktif
+            shakeBtn.disabled = true;
             resetState();
             ciamsiContainer.classList.add('shake-animation');
             fallingStick.className = 'falling-stick';
@@ -595,7 +599,7 @@
                     const hasReachedLimit = throwCount >= maxThrowsFree;
                     if (hasReachedLimit) {
                         throwResultText.textContent = 'Batas lemparan tercapai. Silakan kocok ulang.';
-                        updateUIBasedOnUserState(); // DIUBAH: Aktifkan kembali tombol kocok
+                        updateUIBasedOnUserState();
                     } else {
                         throwResultText.textContent = 'Hasil: Belum direstui. Coba lagi.';
                         throwBtn.disabled = false;
@@ -625,7 +629,6 @@
                     });
                     
                     predictionResult.classList.remove('hidden');
-                    // shakeBtn.disabled = true; // DIHAPUS SESUAI PERMINTAAN
                     
                     if (!isPremiumUser && !isUserAdmin) {
                         try {
@@ -635,7 +638,7 @@
                             console.error("Gagal mengurangi jatah gratis, tapi hasil tetap ditampilkan:", updateError);
                         }
                     }
-                    updateUIBasedOnUserState(); // DIUBAH: Aktifkan kembali tombol kocok untuk sesi berikutnya
+                    updateUIBasedOnUserState();
                     
                 } else {
                     showMessage('Data Kosong', `Data ramalan nomor ${currentPredictionNumberState} belum diisi.`);
@@ -730,7 +733,7 @@
 
         confirmRealPayment.addEventListener('click', async () => {
             const userName = nameInput.value.trim();
-            if (!userName && currentUser.isAnonymous) {
+            if (!userName && currentUser && currentUser.isAnonymous) {
                 showMessage('Peringatan', 'Harap isi nama Anda di halaman utama sebelum melanjutkan.');
                 confirmPaymentPopup.classList.add('hidden');
                 return; 
@@ -748,22 +751,29 @@
                     attempts: selectedPackage.attempts,
                     orderId: orderId
                 });
+                
                 window.snap.pay(result.data.token, {
                     onSuccess: async (res) => {
                         console.log('Payment success:', res);
-                        if (currentUser) {
-                             await updateDoc(doc(db, "users", currentUser.uid), {
-                                isPremium: true
-                            });
-                            await setDoc(doc(db, "purchases", res.order_id), {
-                                status: 'success',
-                                userId: currentUser.uid,
-                                timestamp: serverTimestamp()
-                            });
+                        try {
+                            if (currentUser) {
+                                await updateDoc(doc(db, "users", currentUser.uid), {
+                                    isPremium: true
+                                });
+                                await setDoc(doc(db, "purchases", res.order_id), {
+                                    status: 'success',
+                                    userId: currentUser.uid,
+                                    timestamp: serverTimestamp()
+                                });
+                            }
+                            showMessage('Sukses', 'Pembayaran berhasil! Status premium Anda telah diaktifkan.');
+                            confirmPaymentPopup.classList.add('hidden');
+                            resetState();
+                        } catch (error) {
+                            console.error("Error updating user status after successful payment:", error);
+                            showMessage('Error', 'Pembayaran berhasil, namun gagal memperbarui status. Silakan hubungi admin.');
+                            confirmPaymentPopup.classList.add('hidden');
                         }
-                        showMessage('Sukses', 'Pembayaran berhasil! Status premium Anda telah diaktifkan.');
-                        confirmPaymentPopup.classList.add('hidden');
-                        resetState();
                     },
                     onPending: (res) => {
                         console.log('Payment pending:', res);
@@ -776,6 +786,7 @@
                             });
                         }
                         showMessage('Pending', 'Menunggu konfirmasi pembayaran.');
+                        confirmPaymentPopup.classList.add('hidden');
                     },
                     onError: (res) => {
                         console.error('Payment error:', res);
@@ -788,10 +799,12 @@
                             });
                         }
                         showMessage('Gagal', 'Pembayaran gagal. Silakan coba lagi.');
+                        confirmPaymentPopup.classList.add('hidden');
                     },
                     onClose: () => {
                         console.log('Popup pembayaran ditutup oleh pengguna.');
                         showMessage('Pembayaran Dibatalkan', 'Anda membatalkan pembayaran.');
+                        confirmPaymentPopup.classList.add('hidden');
                     }
                 });
             } catch (error) {
